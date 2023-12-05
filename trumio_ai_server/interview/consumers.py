@@ -1,18 +1,16 @@
 import json
 
-import asyncio
 from asgiref.sync import async_to_sync, sync_to_async
-import time
 from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 from .customagent import Agent
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
         
-
         # Join room group
         # await self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
