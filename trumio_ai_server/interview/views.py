@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .resume_parser import ResumeParser
-from .site_extractors import get_projects
+from .site_extractors import github_get_projects, codeforce_get_info
 
 from asgiref.sync import async_to_sync
 
@@ -43,9 +43,23 @@ def get_github_info(request, *args, **kwargs):
 
     username = kwargs.get('username')
 
-    result = async_to_sync(get_projects)(username)
+    result = async_to_sync(github_get_projects)(username)
 
     return Response(data=result, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(['GET'])
+def get_codefore_info(request, *args, **kwargs):
+
+    username = kwargs.get('username')
+
+    result = codeforce_get_info(username)
+
+    return Response(data=result, status=status.HTTP_200_OK)
+
+
 
 
 

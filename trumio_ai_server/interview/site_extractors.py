@@ -1,12 +1,15 @@
 import httpx
 import requests
 
+
+
+
 async def fetch_languages(client, url):
     response = await client.get(url)
     res = list(response.json())
     return res
 
-async def get_projects(username):
+async def github_get_projects(username):
     try:
         user_url = f"https://api.github.com/users/{username}"
         user_data = requests.get(user_url, headers={"Accept": "application/vnd.github+json",
@@ -32,6 +35,23 @@ async def get_projects(username):
         return tasks
     except Exception as e:
         return []
+
+
+
+
+def codeforce_get_contests( username):
+    response = requests.get(f"https://codeforces.com/api/user.rating?handle={username}")
+    data = response.json()["result"]
+    contest_ranks = [entry['rank'] for entry in data]
+    return contest_ranks
+
+def codeforce_get_info(username):
+    try:
+        response = requests.get(f"https://codeforces.com/api/user.info?handles={username}")
+        data = response.json()["result"][0]
+        return {'rating': data['rating'], 'maxRating': data['maxRating'], "rank" : data["rank"], "maxRank" : data["maxRank"]}
+    except Exception as e:
+        return {}
 
 
 # await get_projects("RasagnyaG")
