@@ -19,17 +19,38 @@ class ResumeParser:
     The output should be in the following json schema
 
     {
-    "education": [{"institute":<instituteName>, "course":<courseName>, "grade":<grade>}],
-    "workEx":[{"companyName":<companyName>, "position":<position>, "duration":<duration>, "description":<description>}],
-    "projects:[{"projectName":<projectName>, "description":<description>}],
-    "lang-fram":[<lang/framework>, <lang/framework>]
+    "Education": [{"institute":<instituteName>, "course":<courseName>, "grade":<grade>}],
+    "WorkEx":[{"companyName":<companyName>, "position":<position>, "duration":<duration>, "description":<description>}],
+    "Projects:[{"projectName":<projectName>, "description":<description>}],
+    "Languages/Frameworks":[<lang/framework>, <lang/framework>]
     }
 
     {}
     """
-    
+
+
+    resume_evaluation = """ You are a bot that classifies a given resume into a set of categories. 
+    Given a set of categories and a resume, for each category you have to give 1 if the resume indicates skill corresponding to the category and 0 otherwise.
+
+    The output should be in the following json schema
+    {
+      <category>: <1/0>
+    }
+
+    The categories are
+
+    1. Frontend Development
+    2. Backend Development
+    3. Machine learning
+    4. Computer Vision
+    5. Natural Language Processing
+    5. Reinforcement Learning
+    """
+
+
     def __init__(self, pdf):
         self.pdf_file = pdf
+        self.client = OpenAI(api_key=API_KEY)
         self.resume_text = self.get_pdf_text(self.pdf_file)
 
 
@@ -40,14 +61,13 @@ class ResumeParser:
 
         return text
 
-    
+
     def get_content(self):
 
         user_prompt = f"Parse the following resume. \n\n {self.resume_text}"
 
-        client = OpenAI(api_key=API_KEY)
-        
-        completion = client.chat.completions.create(
+
+        completion = self.client.chat.completions.create(
                 model=MODEL,
                 messages=[
                 {"role": "system", "content": self.system_prompt},
@@ -55,5 +75,21 @@ class ResumeParser:
                 ],
                 response_format={ "type": "json_object" }
             )
-        
+
         return completion.choices[0].message.content
+
+
+    def get_skills(self):
+
+      completion = self.client.chat.completions.create(
+              model=MODEL,
+              messages=[
+              {"role": "system", "content": self.resume_evaluation},
+              {"role": "user", "content": f"Classify the following resume. \n\n {self.resume_text}"}
+              ],
+              response_format={ "type": "json_object" }
+          )
+      
+      return completion.choices[0].message.content
+
+
