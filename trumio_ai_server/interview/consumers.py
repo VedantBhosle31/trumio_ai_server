@@ -45,11 +45,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             await self.send_msg(message)
 
+            
+
             await sync_to_async(self.user.send)(message, self.inter, request_reply=True)
 
             reply = self.user.messages[self.inter][-1]['content']
 
+            if len(self.user.messages[self.inter])>10:
+                print("Interview Done")
+                await self.get_feedback(self.inter)
+
             await self.send_msg(reply)
+
+            
 
         elif msg_type=="topic":
 
@@ -69,5 +77,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
+
+    async def get_feedback(self, agent):
+        feedback = await sync_to_async(self.user.feedback)(agent)
+        print(json.loads(feedback))
 
 

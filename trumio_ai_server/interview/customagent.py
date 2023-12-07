@@ -138,6 +138,34 @@ class templates:
                Interviewer: {input}
                Response: """
 
+    interview_feedback = PromptTemplate.from_template('''
+                Based on the chat history, I would like you to evaluate the candidate based on the following format:
+                Summarization: summarize the conversation in a short paragraph.
+
+                Pros: Give positive feedback to the candidate.
+
+                Cons: Tell the candidate what he/she can improves on.
+
+                Expertise: Classify the candidates expertise in the topic into one of the three : [Beginner/Intermediate/Expert]
+
+
+               Current conversation:
+               {history}
+
+               Interviewer: {input}
+
+
+               The output should be in the followin json schema
+
+               {{
+                "summary":<summary>,
+                "pros":<pros>,
+                "cons":<cons>
+                "expertise":<expertise>
+               }}
+
+    ''')
+
 
     # interviewer_template = PromptTemplate.from_template('''{expert_prompt}
 
@@ -176,6 +204,7 @@ class templates:
                       Now only reply for "you", don't reply for candidate.
                       And only give a reply once. Don't reply multiple times in a row.
                       Also give the next question.
+                      
                     ''')
 
     # reply_template = PromptTemplate.from_template('''
@@ -381,5 +410,26 @@ class Agent:
 
   def __repr__(self):
     return self.role
+
+
+  def feedback(self, agent):
+    messages = self.messages[agent]
+    history = ""
+
+    for conv in messages:
+      history+=f"{conv['role'].role} : {conv['content']} \n"
+
+    prompt = templates.interview_feedback.format(history=history, input=agent.role)
+
+    completion = self.client.chat.completions.create(
+        model=MODEL,
+              messages=[
+                {"role": "system", "content": "You are an expert in analyzing interviews"},
+                {"role": "user", "content": prompt}
+              ],
+              response_format={ "type": "json_object" }
+    )
+
+    return completion.choices[0].message.content
 
 
