@@ -43,7 +43,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #     self.room_group_name, {"type": "chat.message", "message": message}
         # )
 
-            await self.send_msg(message)
+            # await self.send_msg(message)
 
             
 
@@ -80,6 +80,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def get_feedback(self, agent):
         feedback = await sync_to_async(self.user.feedback)(agent)
-        print(json.loads(feedback))
+        await self.send(text_data=json.dumps(json.loads(feedback)))
 
 
