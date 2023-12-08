@@ -44,7 +44,7 @@ class ResumeParser:
     3. Machine learning
     4. Computer Vision
     5. Natural Language Processing
-    5. Reinforcement Learning
+    6. Reinforcement Learning
     """
 
 
