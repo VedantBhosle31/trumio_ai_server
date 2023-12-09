@@ -88,7 +88,7 @@ Note: sid is the id of the student
 
 ## API to create team
 ```bash
-    /api/create
+    /api/teams/create
 ```
 
 ```JSON
