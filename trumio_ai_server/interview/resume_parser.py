@@ -1,6 +1,9 @@
 from PyPDF2 import PdfReader
 from openai import OpenAI
+from io import BytesIO
 from django.conf import settings
+from typing import List, Union
+import requests
 
 MODEL = settings.MODEL1
 API_KEY = settings.OPENAI_API_KEY
@@ -48,21 +51,42 @@ class ResumeParser:
     """
 
 
-    def __init__(self, pdf):
-        self.pdf_file = pdf
+    def __init__(self, pdf_url:str):
+        self.pdf_url = pdf_url
         self.client = OpenAI(api_key=API_KEY)
-        self.resume_text = self.get_pdf_text(self.pdf_file)
+        self.resume_text: str = self.extract_text(self.pdf_url)
 
 
-    def get_pdf_text(self, pdf):
-        reader = PdfReader(pdf)
-        page = reader.pages[0]
-        text = page.extract_text()
+    # def get_pdf_text(self, pdf: str) -> str:
+    #     reader = PdfReader(pdf)
+    #     page = reader.pages[0]
+    #     text = page.extract_text()
 
-        return text
+    #     return text
+
+    def extract_text(self, pdf_url):
+
+        try:
+            # Download the PDF file
+            response = requests.get(pdf_url)
+
+            # Create a PyPDF2 PdfFileReader object
+            pdf_reader = PdfReader(BytesIO(response.content))
+
+            # Extract text from each page
+            text = ""
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                text += page.extract_text()
+
+            return text
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
 
 
-    def get_content(self):
+    def get_content(self) -> str:
 
         user_prompt = f"Parse the following resume. \n\n {self.resume_text}"
 
@@ -79,7 +103,7 @@ class ResumeParser:
         return completion.choices[0].message.content
 
 
-    def get_skills(self):
+    def get_skills(self) -> str:
 
       completion = self.client.chat.completions.create(
               model=MODEL,

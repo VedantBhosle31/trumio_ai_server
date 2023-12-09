@@ -13,3 +13,5 @@ urlpatterns = [
     path("get-rel-projects/<int:sid>", views.get_preferred_projects, name="get_relevant_projects"),
     path("create_team", views.create_team, name="create-team")
 ]
+
+

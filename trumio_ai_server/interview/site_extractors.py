@@ -2,8 +2,6 @@ import httpx
 import requests
 
 
-
-
 async def fetch_languages(client, url):
     response = await client.get(url)
     res = list(response.json())

@@ -4,28 +4,26 @@ from .site_extractors import github_get_projects, codeforce_get_info
 from .models import store
 import uuid
 from asgiref.sync import async_to_sync
-from langchain.vectorstores import Chroma
+import os
 
 
 from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 import json
 
 
-# from .vectordb import VectorStore
-# from .models import PDFDocument
-# from .serializers import PDFDocumentSerializer
 
 @api_view(['POST'])
-@parser_classes([FileUploadParser])
 def pdf_upload_view(request, *args, **kwargs):
-    pdf_file = request.data['file']
-    uid = uuid.uuid1()
-    r =  ResumeParser(pdf_file)
 
+    pdf_url = request.data['url']
+    uid = request.data['uid']
 
+    print(uid)
+    # print(pdf_file)
+    r =  ResumeParser(pdf_url)
 
     data = dict()
 
@@ -34,13 +32,14 @@ def pdf_upload_view(request, *args, **kwargs):
     data['profile'] = json.loads(resume_content)
     data['skills'] = json.loads(r.get_skills())
 
-    store.add_to_profile(uid, resume_content)
+    print(data['profile'])
 
-    
-    return Response(data=data, status=status.HTTP_201_CREATED)
+    print(os.getcwd())
 
+    # store.add_to_profile(uid, resume_content)
 
-
+    return Response(data=data, status=status.HTTP_200_OK)
+    # return Response(data=data, status=status.HTTP_201_CREATED)
 
 
 def index(request):
@@ -55,7 +54,6 @@ def room(request, room_name):
 def get_github_info(request, *args, **kwargs):
 
     username = kwargs.get('username')
-
     result = async_to_sync(github_get_projects)(username)
 
     return Response(data=result, status=status.HTTP_200_OK)
