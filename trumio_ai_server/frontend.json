@@ -1,0 +1,410 @@
+{
+    "nodes": [
+        {
+            "id": "1",
+            "skill": "Frontend Development Foundations"
+        },
+        {
+            "id": "2",
+            "skill": "HTML"
+        },
+        {
+            "id": "3",
+            "skill": "CSS"
+        },
+        {
+            "id": "4",
+            "skill": "JavaScript"
+        },
+        {
+            "id": "5",
+            "skill": "DOM Manipulation"
+        },
+        {
+            "id": "6",
+            "skill": "Responsive Design"
+        },
+        {
+            "id": "7",
+            "skill": "CSS Preprocessing"
+        },
+        {
+            "id": "8",
+            "skill": "CSS Frameworks"
+        },
+        {
+            "id": "9",
+            "skill": "JavaScript ES6+"
+        },
+        {
+            "id": "10",
+            "skill": "JavaScript Frameworks/Libraries"
+        },
+        {
+            "id": "11",
+            "skill": "React.js"
+        },
+        {
+            "id": "12",
+            "skill": "Vue.js"
+        },
+        {
+            "id": "13",
+            "skill": "Angular"
+        },
+        {
+            "id": "14",
+            "skill": "State Management"
+        },
+        {
+            "id": "15",
+            "skill": "React Context API"
+        },
+        {
+            "id": "16",
+            "skill": "Redux"
+        },
+        {
+            "id": "17",
+            "skill": "Vuex"
+        },
+        {
+            "id": "18",
+            "skill": "NgRx"
+        },
+        {
+            "id": "19",
+            "skill": "TypeScript"
+        },
+        {
+            "id": "20",
+            "skill": "Webpack"
+        },
+        {
+            "id": "21",
+            "skill": "Module Bundlers and Task Runners"
+        },
+        {
+            "id": "22",
+            "skill": "Package Managers"
+        },
+        {
+            "id": "23",
+            "skill": "npm"
+        },
+        {
+            "id": "24",
+            "skill": "yarn"
+        },
+        {
+            "id": "25",
+            "skill": "Testing Frameworks"
+        },
+        {
+            "id": "26",
+            "skill": "Jest"
+        },
+        {
+            "id": "27",
+            "skill": "Mocha"
+        },
+        {
+            "id": "28",
+            "skill": "Cypress"
+        },
+        {
+            "id": "29",
+            "skill": "Accessibility"
+        },
+        {
+            "id": "30",
+            "skill": "SEO Best Practices"
+        },
+        {
+            "id": "31",
+            "skill": "Performance Optimization"
+        },
+        {
+            "id": "32",
+            "skill": "Web APIs"
+        },
+        {
+            "id": "33",
+            "skill": "PWA"
+        },
+        {
+            "id": "34",
+            "skill": "Service Workers"
+        },
+        {
+            "id": "35",
+            "skill": "Web Components"
+        },
+        {
+            "id": "36",
+            "skill": "Frontend Security"
+        },
+        {
+            "id": "37",
+            "skill": "Content Security Policy (CSP)"
+        },
+        {
+            "id": "38",
+            "skill": "Cross-Origin Resource Sharing (CORS)"
+        },
+        {
+            "id": "39",
+            "skill": "Animations"
+        },
+        {
+            "id": "40",
+            "skill": "CSS Animation"
+        },
+        {
+            "id": "41",
+            "skill": "JavaScript Animation Libraries"
+        },
+        {
+            "id": "42",
+            "skill": "Version Control Systems"
+        },
+        {
+            "id": "43",
+            "skill": "Git"
+        },
+        {
+            "id": "44",
+            "skill": "Browser Developer Tools"
+        },
+        {
+            "id": "45",
+            "skill": "Command Line Tools"
+        },
+        {
+            "id": "46",
+            "skill": "GraphQL Client-Side"
+        },
+        {
+            "id": "47",
+            "skill": "Apollo Client"
+        },
+        {
+            "id": "48",
+            "skill": "User Interface (UI) Design"
+        },
+        {
+            "id": "49",
+            "skill": "Adobe XD"
+        },
+        {
+            "id": "50",
+            "skill": "Sketch"
+        },
+        {
+            "id": "51",
+            "skill": "Figma"
+        }
+    ],
+    "edges": [
+        {
+            "source": "1",
+            "target": "2"
+        },
+        {
+            "source": "1",
+            "target": "3"
+        },
+        {
+            "source": "1",
+            "target": "4"
+        },
+        {
+            "source": "2",
+            "target": "5"
+        },
+        {
+            "source": "3",
+            "target": "5"
+        },
+        {
+            "source": "3",
+            "target": "6"
+        },
+        {
+            "source": "3",
+            "target": "7"
+        },
+        {
+            "source": "7",
+            "target": "8"
+        },
+        {
+            "source": "4",
+            "target": "9"
+        },
+        {
+            "source": "4",
+            "target": "10"
+        },
+        {
+            "source": "10",
+            "target": "11"
+        },
+        {
+            "source": "10",
+            "target": "12"
+        },
+        {
+            "source": "10",
+            "target": "13"
+        },
+        {
+            "source": "10",
+            "target": "14"
+        },
+        {
+            "source": "11",
+            "target": "15"
+        },
+        {
+            "source": "15",
+            "target": "16"
+        },
+        {
+            "source": "12",
+            "target": "17"
+        },
+        {
+            "source": "13",
+            "target": "18"
+        },
+        {
+            "source": "10",
+            "target": "19"
+        },
+        {
+            "source": "4",
+            "target": "20"
+        },
+        {
+            "source": "20",
+            "target": "21"
+        },
+        {
+            "source": "4",
+            "target": "22"
+        },
+        {
+            "source": "22",
+            "target": "23"
+        },
+        {
+            "source": "22",
+            "target": "24"
+        },
+        {
+            "source": "4",
+            "target": "25"
+        },
+        {
+            "source": "25",
+            "target": "26"
+        },
+        {
+            "source": "25",
+            "target": "27"
+        },
+        {
+            "source": "25",
+            "target": "28"
+        },
+        {
+            "source": "3",
+            "target": "29"
+        },
+        {
+            "source": "3",
+            "target": "30"
+        },
+        {
+            "source": "3",
+            "target": "31"
+        },
+        {
+            "source": "4",
+            "target": "32"
+        },
+        {
+            "source": "4",
+            "target": "33"
+        },
+        {
+            "source": "33",
+            "target": "34"
+        },
+        {
+            "source": "4",
+            "target": "35"
+        },
+        {
+            "source": "4",
+            "target": "36"
+        },
+        {
+            "source": "36",
+            "target": "37"
+        },
+        {
+            "source": "36",
+            "target": "38"
+        },
+        {
+            "source": "3",
+            "target": "39"
+        },
+        {
+            "source": "39",
+            "target": "40"
+        },
+        {
+            "source": "39",
+            "target": "41"
+        },
+        {
+            "source": "4",
+            "target": "42"
+        },
+        {
+            "source": "42",
+            "target": "43"
+        },
+        {
+            "source": "4",
+            "target": "44"
+        },
+        {
+            "source": "4",
+            "target": "45"
+        },
+        {
+            "source": "4",
+            "target": "46"
+        },
+        {
+            "source": "46",
+            "target": "47"
+        },
+        {
+            "source": "48",
+            "target": "49"
+        },
+        {
+            "source": "48",
+            "target": "50"
+        },
+        {
+            "source": "48",
+            "target": "51"
+        }
+    ]
+}

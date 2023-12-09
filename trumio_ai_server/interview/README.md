@@ -34,9 +34,61 @@ ws://localhost:8000/ws/chat/
 }
 ```
 
+# APIs
 
+
+
+## Parse Resume
 ```bash
-    /api/create_team
+    /api/student/resume
+```
+
+```JSON
+{
+    'url':<url of s3 bucket>,
+    'sid':<student ID>
+}
+```
+
+
+## Get breadth,depth,recommended skills and subgraph for a student
+```bash
+    /api/profile/get_scores/<str:sid>
+```
+Note: sid is the id of the student.
+
+
+
+## API to get the summary of github
+```bash
+    /api/student/github_info/<str:username>
+```
+Note: sid is the id of the student
+
+
+
+## API to get the summary of codeforces
+```bash
+    /api/student/codeforce_info/<str:username>
+```
+Note: sid is the id of the student
+
+
+
+
+
+
+## API to get relevant projects for a student.
+```bash
+    /api/student/get_rel_projects/<sid>
+```
+Note: sid is the id of the student
+
+
+
+## API to create team
+```bash
+    /api/create
 ```
 
 ```JSON
@@ -47,17 +99,8 @@ ws://localhost:8000/ws/chat/
 ```
 
 
-```bash
-    /api/get_rel_projects/<sid>
-```
 
-```JSON
-{
-    "sids":[<uids of the students>],
-    "id":<team id>
-}
-```
-
+## API to get relevant teams for a project
 ```bash
     /api/get_rel_teams
 ```
@@ -69,4 +112,18 @@ ws://localhost:8000/ws/chat/
 }
 ```
 
+
+
+
+## API to add a project.
+```bash
+    /api/project/create
+```
+
+```JSON
+{
+    "desc":<project description>,
+    "pid":<projectID>
+}
+```
 

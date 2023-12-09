@@ -5,6 +5,9 @@ from typing import List, Union
 from chromadb.utils import embedding_functions
 from django.conf import settings
 
+
+from .kg import SubGrapher
+
 HOST = settings.VECTOR_HOST
 PORT = settings.VECTOR_PORT
 
@@ -20,7 +23,8 @@ class VectorStore:
 
     def add_to_profile(self, uid: str, text: str) -> None:
         col = self.get_collection("profiles")
-        text_embed = self.embed(text)
+        
+        text_embed = self.embed([text])
 
         col.add(
             embeddings=text_embed,
@@ -29,7 +33,7 @@ class VectorStore:
 
     def add_to_projects(self, uid: str, text: str) -> None:
         col = self.get_collection("projects")
-        text_embed = self.embed(text)
+        text_embed = self.embed([text])
 
         col.add(
             embeddings=text_embed,
@@ -50,3 +54,9 @@ class VectorStore:
 
 
 store = VectorStore()
+
+subgraphers = dict({
+    'ai':SubGrapher('ai.json', 0.25),
+    'frontend':SubGrapher('frontend.json', 0.25),
+    'backend':SubGrapher('backend.json', 0.25)
+})

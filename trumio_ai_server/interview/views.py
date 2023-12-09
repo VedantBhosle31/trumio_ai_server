@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .resume_parser import ResumeParser
 from .site_extractors import github_get_projects, codeforce_get_info
-from .models import store
+from .models import store, subgraphers
 import uuid
+import torch
 from asgiref.sync import async_to_sync
 import os
 
@@ -19,7 +20,7 @@ import json
 def pdf_upload_view(request, *args, **kwargs):
 
     pdf_url = request.data['url']
-    uid = request.data['uid']
+    uid = request.data['sid']
 
     print(uid)
     # print(pdf_file)
@@ -125,12 +126,33 @@ def get_relevant_teams(request, *args, **kwargs):
     preferred_profiles = store.get_collection("teams").query(query_embeddings=pr['embeddings'][0], n_results=3)
     print(preferred_profiles)
 
-    return Response(status=status.HTTP_200_OK)
+    return Response(data=dict({'ids':preferred_profiles['ids']}),status=status.HTTP_200_OK)
     
 
 
 
 
+@api_view(['GET'])
+def get_scores(request, *args, **kwargs):
 
+    sid = kwargs['sid']
+
+    student_embed = store.get_collection("profiles").get(ids=[sid], include=['embeddings'])['embeddings']
+    subgraph = subgraphers['frontend'].get_subgraph(torch.tensor(student_embed))
+
+    print(subgraph)
+
+    return Response(data=subgraph, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def create_project(request, *args, **kwargs):
+
+    proj_desc = request.data['desc']
+    pid = request.data['pid']
+
+    store.add_to_projects(pid, proj_desc)
+
+    return Response(status=status.HTTP_200_OK)
 
 
