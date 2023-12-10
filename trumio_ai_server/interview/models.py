@@ -16,7 +16,7 @@ class VectorStore:
 
     def __init__(self) -> None:
         self.client = chromadb.HttpClient(host=HOST, port=PORT)
-        self.embed = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
+        self.embed = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=settings.EMBEDDING)
 
     def get_collection(self, name: str) -> chromadb.Collection:
         return self.client.get_or_create_collection(name=name, embedding_function=self.embed, metadata={"hnsw:space": "cosine"})

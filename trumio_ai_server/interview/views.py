@@ -19,28 +19,31 @@ import json
 @api_view(['POST'])
 def pdf_upload_view(request, *args, **kwargs):
 
-    pdf_url = request.data['url']
-    uid = request.data['sid']
+    try:
 
-    print(uid)
-    # print(pdf_file)
-    r =  ResumeParser(pdf_url)
+        pdf_url = request.data['url']
+        uid = request.data['sid']
+        r =  ResumeParser(pdf_url)
 
-    data = dict()
+        data = dict()
 
-    resume_content = r.get_content()
+        resume_content = r.get_content()
 
-    data['profile'] = json.loads(resume_content)
-    data['skills'] = json.loads(r.get_skills())
+        data['profile'] = json.loads(resume_content)
+        data['skills'] = json.loads(r.get_skills())
 
-    print(data['profile'])
+        store.add_to_profile(uid, resume_content)
 
-    print(os.getcwd())
 
-    # store.add_to_profile(uid, resume_content)
+        return Response(data=data, status=status.HTTP_200_OK)
 
-    return Response(data=data, status=status.HTTP_200_OK)
-    # return Response(data=data, status=status.HTTP_201_CREATED)
+
+    except KeyError as e:
+        return Response(data=dict({"error":f"Missing key : {str(e)}"}), status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 def index(request):
@@ -65,73 +68,123 @@ def get_github_info(request, *args, **kwargs):
 @api_view(['GET'])
 def get_codefore_info(request, *args, **kwargs):
 
-    username = kwargs.get('username')
+    try:
+        username = kwargs.get('username')
 
-    result = codeforce_get_info(username)
+        if not username:
+            return Response({'error': 'Missing username parameter'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response(data=result, status=status.HTTP_200_OK)
+        result = codeforce_get_info(username)
+
+        return Response(data=result, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 @api_view(['POST'])
 def create_team(request, *args, **kwargs):
 
-    sids = request.data['sids']
-    team_id = request.data['id']
-    project_id = request.data['proj_id']
+    try:
+        sids = request.data['sids']
+        team_id = request.data['id']
+        project_id = request.data['proj_id']
 
-    store.add_to_teams(sids, team_id, project_id)
+        store.add_to_teams(sids, team_id, project_id)
 
-    return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
+
+    except KeyError as e:
+        return Response(data=dict({"error":f"Missing key : {str(e)}"}), status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 @api_view(['GET'])
 def get_relevant_profile(request, *args, **kwargs):
     
-    pid = kwargs['pid']
+    try:
+        pid = kwargs['pid']
 
-    collection = store.get_collection("projects")
+        if not pid:
+            return Response({'error': 'Missing project id parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        collection = store.get_collection("projects")
 
-    pr = collection.get(ids=[pid], include=['embeddings'])
+        pr = collection.get(ids=[pid], include=['embeddings'])
 
-    preferred_profiles = store.get_collection("profiles").query(query_embeddings=pr['embeddings'][0], n_results=3)
+        if len(pr['embeddings'])==0:
+            return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    data = dict(zip(preferred_profiles['ids'][0], preferred_projects['distances'][0]))
+
+        preferred_profiles = store.get_collection("profiles").query(query_embeddings=pr['embeddings'][0], n_results=3)
+
+        data = dict(zip(preferred_profiles['ids'][0], preferred_projects['distances'][0]))
+
+        return Response(data=data, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    return Response(data=data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def get_relevant_projects(request, *args, **kwargs):
     
-    sid = kwargs['sid']  
-    collection = store.get_collection("profiles")
+    try:
+        sid = kwargs['sid']  
 
-    sp = collection.get(ids=[sid], include=['embeddings'])
+        if not sid:
+            return Response({'error': 'Missing sid parameter'}, status=status.HTTP_400_BAD_REQUEST)
 
-    preferred_projects = store.get_collection("projects").query(query_embeddings=sp['embeddings'][0], n_results=15, include=['distances'])
-    
-    data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
+        collection = store.get_collection("profiles")
 
-    return Response(data=data, status=status.HTTP_200_OK)
+        sp = collection.get(ids=[sid], include=['embeddings'])
+
+        if len(sp['embeddings'])==0:
+            return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        preferred_projects = store.get_collection("projects").query(query_embeddings=sp['embeddings'][0], n_results=15, include=['distances'])
+        
+        data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
+
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 
 @api_view(['GET'])
 def get_relevant_projects_for_team(request, *args, **kwargs):
     
-    tid = kwargs['tid']  
-    collection = store.get_collection("teams")
+    try:
+        tid = kwargs['tid']  
 
-    tp = collection.get(ids=[tid], include=['embeddings'])
+        if not tid:
+            return Response({'error': 'Missing team id parameter'}, status=status.HTTP_400_BAD_REQUEST)
 
-    print(tp)
+        collection = store.get_collection("teams")
 
-    preferred_projects = store.get_collection("projects").query(query_embeddings=tp['embeddings'][0], n_results=15, include=['distances'])
-    
-    data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
+        tp = collection.get(ids=[tid], include=['embeddings'])
 
-    return Response(data=data, status=status.HTTP_200_OK)
+        if len(tp['embeddings'])==0:
+            return Response({'error': 'Team not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        preferred_projects = store.get_collection("projects").query(query_embeddings=tp['embeddings'][0], n_results=15, include=['distances'])
+        data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
+
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
@@ -139,17 +192,27 @@ def get_relevant_projects_for_team(request, *args, **kwargs):
 @api_view(['GET'])
 def get_relevant_teams(request, *args, **kwargs):
         
-    pid = kwargs['pid']
+    try:
+        pid = kwargs['pid']
+        
+        if not pid:
+            return Response({'error': 'Missing project id parameter'}, status=status.HTTP_400_BAD_REQUEST)
 
-    collection = store.get_collection("projects")
+        collection = store.get_collection("projects")
 
-    pr = collection.get(ids=[pid], include=['embeddings'])
+        pr = collection.get(ids=[pid], include=['embeddings'])
 
-    preferred_teams = store.get_collection("teams").query(query_embeddings=pr['embeddings'][0], n_results=15, where={"project_id":pid})
-    
-    data = dict(zip(preferred_teams['ids'][0], preferred_teams['distances'][0]))
+        if len(pr['embeddings'])==0:
+            return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    return Response(data=data,status=status.HTTP_200_OK)
+        preferred_teams = store.get_collection("teams").query(query_embeddings=pr['embeddings'][0], n_results=15, where={"project_id":pid})
+        data = dict(zip(preferred_teams['ids'][0], preferred_teams['distances'][0]))
+
+        return Response(data=data,status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 
 
@@ -157,39 +220,51 @@ def get_relevant_teams(request, *args, **kwargs):
 
 @api_view(['POST'])
 def get_scores(request, *args, **kwargs):
+    
+    try:
+        sid = request.data['sid']
 
-    # graphs = dict({
-    #     'AI/ML':'ai.json',
-    #     'backend':'backend.json',
-    #     'frontend':'frontend.json'
-    # })
+        student_embed = store.get_collection("profiles").get(ids=[sid], include=['embeddings'])['embeddings']
 
-    sid = request.data['sid']
+        
+        if not student_embed:
+            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    student_embed = store.get_collection("profiles").get(ids=[sid], include=['embeddings'])['embeddings']
 
-    data = dict()
+        data = dict()
 
-    print(request.data)
+        for domain in request.data['domains']:
+            subgraph = subgraphers[domain].get_subgraph(torch.tensor(student_embed))
+            data[domain] =  subgraph
 
-    for domain in request.data['domains']:
 
-        subgraph = subgraphers[domain].get_subgraph(torch.tensor(student_embed))
-        data[domain] =  subgraph
+        return Response(data=data, status=status.HTTP_200_OK)
 
-    print(data)
+    except KeyError as e:
+        return Response(data=dict({"error":f"Missing key : {str(e)}"}), status=status.HTTP_400_BAD_REQUEST)
 
-    return Response(data=data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 @api_view(['POST'])
 def create_project(request, *args, **kwargs):
 
-    proj_desc = request.data['desc']
-    pid = request.data['pid']
+    try:
+        proj_desc = request.data['desc']
+        pid = request.data['pid']
 
-    store.add_to_projects(pid, proj_desc)
+        store.add_to_projects(pid, proj_desc)
 
-    return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
+
+    except KeyError as e:
+        return Response(data=dict({"error":f"Missing key : {str(e)}"}), status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response(data=dict({'error': f'Something went wrong: {str(e)}'}), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
