@@ -6,7 +6,24 @@ from .customagent import Agent
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    
+    """
+    Class for handling WebSocket communication in a chat room.
+
+    Attributes:
+        - room_name (str): The name of the chat room.
+        - room_group_name (str): The name of the WebSocket room group associated with the chat room.
+    """
     async def connect(self):
+        """
+        Connect to the WebSocket and initialize necessary attributes.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
@@ -18,19 +35,47 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # await self.set_agents()
 
-    async def set_agents(self, topic, subtopics):
+    async def set_agents(self, topic: str, subtopics: list[str]) -> None:
+        """
+        Initialize conversation agents for the chat.
+
+        Args:
+            - topic (str): The main topic of the conversation.
+            - subtopics (list): A list of subtopics related to the main topic.
+
+        Returns:
+            None
+        """
         self.inter = Agent(subtopics, topic, role="assistant")
         self.user = Agent(role="user")
         await self.send(text_data=json.dumps({"info":"agent initialized"}))
 
 
-    async def disconnect(self, close_code):
+    async def disconnect(self, close_code: int) -> None:
+        """
+        Disconnect from the WebSocket.
+
+        Args:
+            - close_code: The close code for the disconnection.
+
+        Returns:
+            None
+        """
         # Leave room group
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
+    async def receive(self, text_data: str) -> None:
+        """
+        Receive and process messages from the WebSocket.
+
+        Args:
+            - text_data (str): The received message in JSON format.
+
+        Returns:
+            None
+        """
         text_data_json = json.loads(text_data)
         msg_type = text_data_json['type']
 
@@ -68,17 +113,44 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 
-    async def send_msg(self, message):
+    async def send_msg(self, message: str) -> None:
+        """
+        Send a message to the WebSocket.
+
+        Args:
+            - message (str): The message to be sent.
+
+        Returns:
+            None
+        """
         await self.send(text_data=json.dumps({"message": message}))
 
     # Receive message from room group
-    async def chat_message(self, event):
+    async def chat_message(self, event: dict) -> None:
+        """
+        Handle and broadcast chat messages to the room group.
+
+        Args:
+            - event: The event containing the chat message.
+
+        Returns:
+            None
+        """
         message = event["message"]
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
 
-    async def get_feedback(self, agent):
+    async def get_feedback(self, agent: any) -> None:
+        """
+        Get feedback and send it through the WebSocket.
+
+        Args:
+            - agent: The conversation agent for which feedback is requested.
+
+        Returns:
+            None
+        """
         feedback = await sync_to_async(self.user.feedback)(agent)
         await self.send(text_data=json.dumps(json.loads(feedback)))
 
