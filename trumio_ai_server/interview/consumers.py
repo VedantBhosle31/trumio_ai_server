@@ -2,7 +2,9 @@ import json
 
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
+
 from .customagent import Agent
+
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -155,3 +157,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(json.loads(feedback)))
 
 
+    async def update_score(self, feedback):
+
+        print(feedback)
+        print()

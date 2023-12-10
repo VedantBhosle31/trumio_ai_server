@@ -1,9 +1,10 @@
-from django.db import models
-import chromadb
-import numpy as np
 from typing import List, Union
-from chromadb.utils import embedding_functions
+
+import numpy as np
 from django.conf import settings
+import chromadb
+from chromadb.utils import embedding_functions
+from django.db import models
 
 
 from .kg import SubGrapher

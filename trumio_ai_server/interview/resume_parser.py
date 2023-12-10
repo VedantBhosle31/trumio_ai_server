@@ -2,9 +2,13 @@
 from PyPDF2 import PdfReader
 from openai import OpenAI
 from io import BytesIO
-from django.conf import settings
 from typing import List, Union
+
 import requests
+from openai import OpenAI
+from PyPDF2 import PdfReader
+from django.conf import settings
+
 
 # Retrieve settings for the AI model and API key from Django's settings module.
 MODEL = settings.MODEL1
@@ -83,7 +87,7 @@ class ResumeParser:
 
     #     return text
 
-    def extract_text(self, pdf_url):
+    def extract_text(self, pdf_url:str) -> str:
         """
         Extracts text from a PDF located at a specified URL.
 
@@ -93,7 +97,6 @@ class ResumeParser:
         Returns:
         - str: Extracted text from PDF or None if an error occurs.
         """
-
         try:
             response = requests.get(pdf_url)    # Send a GET request to download the PDF.
 

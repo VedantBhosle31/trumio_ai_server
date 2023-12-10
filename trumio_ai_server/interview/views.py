@@ -1,19 +1,18 @@
-from django.shortcuts import render
-from .resume_parser import ResumeParser
-from .site_extractors import github_get_projects, codeforce_get_info
-from .models import store, subgraphers
+import os
+import json
 import uuid
+
 import torch
 from asgiref.sync import async_to_sync
-import os
-
-
+from django.shortcuts import render
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
-import json
 
+from .models import store, subgraphers
+from .resume_parser import ResumeParser
+from .site_extractors import github_get_projects, codeforce_get_info
 
 
 @api_view(['POST'])

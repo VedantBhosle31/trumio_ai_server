@@ -1,15 +1,16 @@
 # dependencies install: pip3 install typing torch json numpy transformers django
 
 from typing import List, Dict
-import torch
+from bisect import insort
 import json
+
 import numpy as np
+import torch
 from torch import nn
 from torch.nn import functional as F
 from transformers import AutoTokenizer, AutoModel
-from bisect import insort
-
 from django.conf import settings
+
 
 torch.set_grad_enabled(False)
 
