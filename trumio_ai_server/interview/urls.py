@@ -12,7 +12,7 @@ urlpatterns = [
     path("projects/get_rel_teams/<str:pid>", views.get_relevant_teams, name="get_relevant_profile"),
     path("students/get-rel-projects/<str:sid>", views.get_preferred_projects, name="get_relevant_projects"),
     path("teams/create", views.create_team, name="create-team"),
-    path("profile/get_scores/<str:sid>", views.get_scores, name="get_score_and_recommend"),
+    path("profile/get_scores", views.get_scores, name="get_score_and_recommend"),
     path("projects/create", views.create_project, name="create_project")
 ]
 

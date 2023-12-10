@@ -135,14 +135,28 @@ def get_relevant_teams(request, *args, **kwargs):
 @api_view(['GET'])
 def get_scores(request, *args, **kwargs):
 
-    sid = kwargs['sid']
+    # graphs = dict({
+    #     'AI/ML':'ai.json',
+    #     'backend':'backend.json',
+    #     'frontend':'frontend.json'
+    # })
+
+    sid = request.data['sid']
 
     student_embed = store.get_collection("profiles").get(ids=[sid], include=['embeddings'])['embeddings']
-    subgraph = subgraphers['frontend'].get_subgraph(torch.tensor(student_embed))
 
-    print(subgraph)
+    data = dict()
 
-    return Response(data=subgraph, status=status.HTTP_200_OK)
+    print(request.data)
+
+    for domain in request.data['domains']:
+
+        subgraph = subgraphers[domain].get_subgraph(torch.tensor(student_embed))
+        data[domain] =  subgraph
+
+    print(data)
+
+    return Response(data=data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
