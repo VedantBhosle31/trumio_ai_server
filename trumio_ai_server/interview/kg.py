@@ -1,4 +1,4 @@
-# dependencies install: pip3 install typing torch json numpy transformers
+# dependencies install: pip3 install typing torch json numpy transformers django
 
 from typing import List, Dict
 import torch
@@ -12,22 +12,6 @@ from bisect import insort
 from django.conf import settings
 
 torch.set_grad_enabled(False)
-
-# Final Class
-
-"""
-Usage:
-
-sub_grapher = Sub_Grapher(graph_filename, <threshold>)
-sub_grapher.load_people(json_filename)
-sub_graphs = sub_grapher.get_subgraphs()
-sub_grapher.to_json(sub_graphs, json_filename)
-
-Benchmark(s):
-
-get_subgraphs(): ~0.4s per person
-get_subgraph(): ~0.4s per call
-"""
 
 MODEL = f"sentence-transformers/{settings.EMBEDDING}"
 
@@ -64,12 +48,8 @@ class SubGrapher:
         )
 
     def load_model(self):
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            MODEL
-        )
-        self.model = AutoModel.from_pretrained(
-            MODEL
-        )
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL)
+        self.model = AutoModel.from_pretrained(MODEL)
 
     def encode(self, sentences: List[str]):
         encoded_input = self.tokenizer(
@@ -113,17 +93,6 @@ class SubGrapher:
             0,
         )
         return np.where(similarities >= self.threshold)[-1] + 1
-        # sentence_encoding = self.encode(
-        #     [
-        #         sentence,
-        #     ]
-        # )
-        # similarities = F.threshold(
-        #     self.cosine(sentence_encoding, self.node_encoding),
-        #     self.threshold,
-        #     0,
-        # )
-        # return np.where(similarities >= self.threshold)[-1] + 1
 
     def set_topic_nodes(self):
         self.topic_nodes = []
@@ -184,15 +153,13 @@ class SubGrapher:
         rec_nodes, breadth = self.get_uncompleted_nodes_breadth(sim_nodes, "1")
         proficiency = self.get_topic_proficiency(sim_nodes)
         depth = self.get_depth(sim_nodes)
-        print(depth)
         subgraph = {
             "nodes": [],
             "edges": [],
             "recommended": [],
             "breadth": str(breadth),
             "depth": str(depth),
-            "proficiency": proficiency
-            
+            "proficiency": proficiency,
         }
         for node in self.nodes:
             if self.binary_search(sim_nodes, int(node["id"])) != -1:
@@ -238,8 +205,7 @@ class SubGrapher:
     def get_depth(self, nodes):
         distance = 0
         for node in nodes:
-            # distance += self.graph["nodes"][int(node) - 1]["distance"]
-            distance+=1
+            distance += self.graph["nodes"][int(node) - 1]["distance"]
         try:
             return distance / (len(nodes) * self.max_depth)
         except:
@@ -248,11 +214,17 @@ class SubGrapher:
     def set_max_depth(self):
         self.max_depth = 0
         for node in self.graph["nodes"]:
-            # self.max_depth = max(self.max_depth, node["distance"])
-            self.max_depth=5
+            self.max_depth = max(self.max_depth, node["distance"])
 
     def set_max_breadth(self):
         self.max_breadth = 0
         for edge in self.graph["edges"]:
             if edge["source"] == "1":
                 self.max_breadth += 1
+
+    def _save_supergraph(self, filename: str):
+        self.graph["max_depth"] = self.max_depth
+        self.graph["inv_max_breadth"] = 1 / self.max_breadth
+        self.graph["subdomains"] = self.topic_nodes
+        with open(filename, "w") as file:
+            json.dump(self.graph, file)
