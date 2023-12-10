@@ -787,7 +787,8 @@ class SubGrapher:
         """
         distance = 0
         for node in nodes:
-            distance += self.graph["nodes"][int(node) - 1]["distance"]
+            # distance += self.graph["nodes"][int(node) - 1]["distance"]
+            distance += 1
         try:
             return distance / (len(nodes) * self.max_depth)
         except:
@@ -805,7 +806,8 @@ class SubGrapher:
         """
         self.max_depth = 0
         for node in self.graph["nodes"]:
-            self.max_depth = max(self.max_depth, node["distance"])
+            # self.max_depth = max(self.max_depth, node["distance"])
+            self.max_depth = 10
 
     def set_max_breadth(self):
         """
