@@ -1,4 +1,4 @@
-# dependencies install: pip3 install typing torch json numpy transformers
+# dependencies install: pip3 install typing torch json numpy transformers django
 
 from typing import List, Dict
 import torch
@@ -13,28 +13,12 @@ from django.conf import settings
 
 torch.set_grad_enabled(False)
 
-# Final Class
-
-"""
-Usage:
-
-sub_grapher = Sub_Grapher(graph_filename, <threshold>)
-sub_grapher.load_people(json_filename)
-sub_graphs = sub_grapher.get_subgraphs()
-sub_grapher.to_json(sub_graphs, json_filename)
-
-Benchmark(s):
-
-get_subgraphs(): ~0.4s per person
-get_subgraph(): ~0.4s per call
-"""
-
 MODEL = f"sentence-transformers/{settings.EMBEDDING}"
 
 
 class SubGrapher:
     """
-    A class that performs subgraph analysis on a given graph using sentence embeddings.
+    Performs subgraph analysis on a given graph using sentence embeddings
 
     Usage:
     sub_grapher = SubGrapher(graph_filename, threshold)
@@ -46,9 +30,8 @@ class SubGrapher:
     get_subgraphs(): ~0.4s per person
     get_subgraph(): ~0.4s per call
     """
-    
-    
-    def __init__(self, graph_filename: str, threshold: float=0.5):
+
+    def __init__(self, graph_filename: str, threshold: float = 0.5):
         """
         Initializes the SubGrapher instance.
 
@@ -59,7 +42,17 @@ class SubGrapher:
         Returns:
             None
         """
-        
+
+        """
+        Initializes the SubGrapher instance.
+
+        Parameters:
+            graph_filename (str): The filename of the graph JSON file.
+            threshold (float): Similarity threshold for subgraph analysis.
+
+        Returns:
+            None
+        """
         self.threshold = threshold
         self.load_model()
         self.cosine = nn.CosineSimilarity(dim=1)
@@ -72,7 +65,7 @@ class SubGrapher:
 
     def check_graph(self):
         """
-        Checks if the graph is properly structured.
+        Checks if the graph is properly structured for faster evaluation.
 
         Returns:
             None
@@ -84,9 +77,9 @@ class SubGrapher:
             if int(edge["source"]) >= int(edge["target"]):
                 raise ValueError("Edges not set properly")
 
-    def mean_pooling(self, model_output, attention_mask) -> torch.Tensor:
+    def mean_pooling(self, model_output, attention_mask):
         """
-        Performs mean pooling on the model output.
+        Mean pools on the model output with attention mask.
 
         Parameters:
             model_output: The output from the transformer model.
@@ -95,9 +88,7 @@ class SubGrapher:
         Returns:
             torch.Tensor: The mean-pooled tensor.
         """
-        token_embeddings = model_output[
-            0
-        ]  # First element of model_output contains all token embeddings
+        token_embeddings = model_output[0]
         input_mask_expanded = (
             attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
         )
@@ -105,29 +96,22 @@ class SubGrapher:
             input_mask_expanded.sum(1), min=1e-9
         )
 
-    def load_model(self) -> None:
+    def load_model(self):
         """
         Loads the transformer model and tokenizer.
-
-        Returns:
-            None
         """
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            MODEL
-        )
-        self.model = AutoModel.from_pretrained(
-            MODEL
-        )
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL)
+        self.model = AutoModel.from_pretrained(MODEL)
 
-    def encode(self, sentences: List[str]) -> torch.Tensor:
+    def encode(self, sentences: List[str]):
         """
         Encodes a list of sentences into sentence embeddings.
 
-        Parameters:
+        Args:
             sentences (List[str]): List of sentences to encode.
 
         Returns:
-            torch.Tensor: The normalized sentence embeddings.
+            torch.Tensor: The unnormalized sentence embeddings.
         """
         encoded_input = self.tokenizer(
             sentences, padding=True, truncation=True, return_tensors="pt"
@@ -136,17 +120,17 @@ class SubGrapher:
         sentence_embeddings = self.mean_pooling(
             model_output, encoded_input["attention_mask"]
         )
-        return F.normalize(sentence_embeddings, p=2, dim=1)
+        return sentence_embeddings
 
     def load_people(self, filename: str) -> List[Dict]:
         """
-        Loads a JSON file containing information about a person.
+        Loads a JSON file containing information about a list of people.
 
-        Parameters:
+        Args:
             filename (str): The filename of the JSON file.
 
         Returns:
-            Dict: A dictionary containing information about a person.
+            List[Dict]: Sequential loaded list of all the people.
         """
         with open(filename, "r") as file:
             self.people = json.load(file)
@@ -154,40 +138,34 @@ class SubGrapher:
 
     def load_person(self, filename: str) -> Dict:
         """
-        Loads a JSON file containing information about the graph.
+        Loads a JSON file containing information about a person.
 
-        Parameters:
+        Args:
             filename (str): The filename of the JSON file.
 
         Returns:
-            Dict: A dictionary containing information about the graph.
+            Dict: The loaded person.
         """
-
         with open(filename, "r") as file:
             self.person = json.load(file)
         return self.person
 
     def load_graph(self, filename: str) -> Dict:
+        """
+        Loads the supergraph from a JSON file.
+
+        Parameters:
+            filename (str): The filename to load the JSON file.
+
+        Returns:
+            Dict: The loaded graph.
+        """
         with open(filename, "r") as file:
             self.graph = json.load(file)
             self.nodes = self.graph["nodes"]
             self.edges = self.graph["edges"]
             self.node_values = [node["skill"] for node in self.nodes]
         return self.graph
-
-    def write_to_file(self, object: Dict, filename: str) -> None:
-        """
-        Writes a dictionary object to a JSON file.
-
-        Parameters:
-            object (Dict): The dictionary object.
-            filename (str): The filename of the JSON file.
-
-        Returns:
-            None
-        """
-        with open(filename, "w") as file:
-            json.dump(object, file)
 
     def encode_node_values(self):
         """
@@ -202,7 +180,7 @@ class SubGrapher:
         """
         Retrieves nodes similar to a given sentence embedding.
 
-        Parameters:
+        Args:
             resume_vec (torch.Tensor): The sentence embedding.
 
         Returns:
@@ -214,17 +192,6 @@ class SubGrapher:
             0,
         )
         return np.where(similarities >= self.threshold)[-1] + 1
-        # sentence_encoding = self.encode(
-        #     [
-        #         sentence,
-        #     ]
-        # )
-        # similarities = F.threshold(
-        #     self.cosine(sentence_encoding, self.node_encoding),
-        #     self.threshold,
-        #     0,
-        # )
-        # return np.where(similarities >= self.threshold)[-1] + 1
 
     def set_topic_nodes(self):
         """
@@ -242,7 +209,7 @@ class SubGrapher:
         """
         Computes topic proficiency based on a set of nodes.
 
-        Parameters:
+        Args:
             nodes (List[int]): List of node indices.
             head (str): The head node identifier.
 
@@ -270,7 +237,7 @@ class SubGrapher:
         """
         Retrieves edges that connect similar nodes.
 
-        Parameters:
+        Args:
             nodes (List[int]): List of node indices.
 
         Returns:
@@ -291,7 +258,7 @@ class SubGrapher:
         """
         Performs binary search on a sorted array.
 
-        Parameters:
+        Args:
             arr (List[int]): The sorted array.
             target (int): The target value to search.
 
@@ -314,11 +281,11 @@ class SubGrapher:
 
         return -1
 
-    def get_subgraph(self, resume_vec: torch.Tensor) -> Dict:
+    def get_subgraph(self, resume_vec):
         """
         Generates a subgraph based on a given resume vector.
 
-        Parameters:
+        Args:
             resume_vec (torch.Tensor): The resume vector.
 
         Returns:
@@ -329,15 +296,13 @@ class SubGrapher:
         rec_nodes, breadth = self.get_uncompleted_nodes_breadth(sim_nodes, "1")
         proficiency = self.get_topic_proficiency(sim_nodes)
         depth = self.get_depth(sim_nodes)
-        print(depth)
         subgraph = {
             "nodes": [],
             "edges": [],
             "recommended": [],
             "breadth": str(breadth),
             "depth": str(depth),
-            "proficiency": proficiency
-            
+            "proficiency": proficiency,
         }
         for node in self.nodes:
             if self.binary_search(sim_nodes, int(node["id"])) != -1:
@@ -348,11 +313,11 @@ class SubGrapher:
             subgraph["edges"].append({"source": str(edge[0]), "target": str(edge[1])})
         return subgraph
 
-    def get_subgraphs(self, people = None) -> List[Dict]:
+    def get_subgraphs(self, people=None):
         """
         Generates subgraphs for a list of people.
 
-        Parameters:
+        Args:
             people (Optional[List[Dict]]): List of dictionaries containing information about people.
 
         Returns:
@@ -365,11 +330,11 @@ class SubGrapher:
             subgraphs.append(self.get_subgraph(person))
         return subgraphs
 
-    def to_json(self, object: dict, filename: str) -> None:
+    def to_json(self, object, filename: str):
         """
         Writes a dictionary object to a JSON file.
 
-        Parameters:
+        Args:
             object (Dict): The dictionary object.
             filename (str): The filename of the JSON file.
 
@@ -379,11 +344,11 @@ class SubGrapher:
         with open(filename, "w") as file:
             json.dump(object, file)
 
-    def get_uncompleted_nodes_breadth(self, nodes: List[int], breadth_head: str = "1") -> tuple[List[int], float]:
+    def get_uncompleted_nodes_breadth(self, nodes: List[int], breadth_head: str = "1"):
         """
         Computes uncompleted nodes and breadth for a set of nodes.
 
-        Parameters:
+        Args:
             nodes (List[int]): List of node indices.
             breadth_head (str): The head node identifier for breadth calculation.
 
@@ -409,11 +374,11 @@ class SubGrapher:
             insort(one_step_nodes, idx)
         return one_step_nodes, breadth / self.max_breadth
 
-    def get_depth(self, nodes: List[int]) -> float:
+    def get_depth(self, nodes):
         """
         Computes depth for a set of nodes.
 
-        Parameters:
+        Args:
             nodes (List[int]): List of node indices.
 
         Returns:
@@ -421,14 +386,13 @@ class SubGrapher:
         """
         distance = 0
         for node in nodes:
-            # distance += self.graph["nodes"][int(node) - 1]["distance"]
-            distance+=1
+            distance += self.graph["nodes"][int(node) - 1]["distance"]
         try:
             return distance / (len(nodes) * self.max_depth)
         except:
             return 0
 
-    def set_max_depth(self) -> None:
+    def set_max_depth(self):
         """
         Sets the maximum depth of the graph.
 
@@ -440,10 +404,9 @@ class SubGrapher:
         """
         self.max_depth = 0
         for node in self.graph["nodes"]:
-            # self.max_depth = max(self.max_depth, node["distance"])
-            self.max_depth=5
+            self.max_depth = max(self.max_depth, node["distance"])
 
-    def set_max_breadth(self) -> None:
+    def set_max_breadth(self):
         """
         Sets the maximum breadth of the graph.
 
@@ -457,3 +420,18 @@ class SubGrapher:
         for edge in self.graph["edges"]:
             if edge["source"] == "1":
                 self.max_breadth += 1
+
+    def _save_supergraph(self, filename: str):
+        """
+        Saves supergraph with processed metadata
+
+        Parameters:
+         - filename (str): file to save the supergraph.
+
+        Returns:
+            None
+        """
+        self.graph["max_depth"] = self.max_depth
+        self.graph["inv_max_breadth"] = 1 / self.max_breadth
+        self.graph["subdomains"] = self.topic_nodes
+        self.to_json(self.graph, filename)
