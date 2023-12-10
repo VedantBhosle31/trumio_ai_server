@@ -40,7 +40,7 @@ ws://localhost:8000/ws/chat/
 
 ## Parse Resume
 ```bash
-    /api/student/resume
+    /api/students/resume
 ```
 
 ```JSON
@@ -70,7 +70,7 @@ Output
 
 ## Get breadth,depth,recommended skills and subgraph for a student
 ```bash
-    /api/profile/get_scores
+    /api/students/get_scores
 ```
 Note: sid is the id of the student.
 
@@ -228,7 +228,7 @@ Note: sid is the id of the student.
 
 ## API to get the summary of github
 ```bash
-    /api/student/github_info/<str:username>
+    /api/students/github_info/<str:username>
 ```
 Note: sid is the id of the student
 
@@ -236,18 +236,15 @@ Note: sid is the id of the student
 
 ## API to get the summary of codeforces
 ```bash
-    /api/student/codeforce_info/<str:username>
+    /api/students/codeforce_info/<str:username>
 ```
 Note: sid is the id of the student
 
 
 
-
-
-
 ## API to get relevant projects for a student.
 ```bash
-    /api/student/get_rel_projects/<sid>
+    /api/students/get_rel_projects/<sid>
 ```
 Note: sid is the id of the student
 
@@ -268,24 +265,19 @@ Note: sid is the id of the student
 ```JSON
 {
     "sids":[<uids of the students>],
-    "id":<team id>
+    "id":<team id>,
+    "proj_id":<project id>
 }
 ```
 
 
 
-## API to get relevant teams for a project
+## API to get relevant projects for a team
 ```bash
-    /api/get_rel_teams
+    /api/teams/get_relevant_projects/<teamid>
 ```
 
-```JSON
-{
-    "sids":[<uids of the students>],
-    "id":<team id>
-}
-```
-
+Response
 ```JSON
 {
     <id>:<score>,
@@ -296,9 +288,11 @@ Note: sid is the id of the student
 
 
 
+
+
 ## API to add a project.
 ```bash
-    /api/project/create
+    /api/projects/create
 ```
 input
 ```JSON
@@ -308,3 +302,16 @@ input
 }
 ```
 
+
+## API to get relevant teams for a project
+```bash
+    /api/projects/get_rel_teams/<project id>
+```
+
+Response
+```JSON
+{
+    <id>:<score>,
+    <id>:<score>
+}
+```
