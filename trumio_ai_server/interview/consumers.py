@@ -18,7 +18,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Connect to the WebSocket and initialize necessary attributes.
 
-        Args:
+        Parameters:
             None
 
         Returns:
@@ -39,7 +39,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Initialize conversation agents for the chat.
 
-        Args:
+        Parameters:
             - topic (str): The main topic of the conversation.
             - subtopics (list): A list of subtopics related to the main topic.
 
@@ -55,7 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Disconnect from the WebSocket.
 
-        Args:
+        Parameters:
             - close_code: The close code for the disconnection.
 
         Returns:
@@ -70,7 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Receive and process messages from the WebSocket.
 
-        Args:
+        Parameters:
             - text_data (str): The received message in JSON format.
 
         Returns:
@@ -117,7 +117,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Send a message to the WebSocket.
 
-        Args:
+        Parameters:
             - message (str): The message to be sent.
 
         Returns:
@@ -130,7 +130,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Handle and broadcast chat messages to the room group.
 
-        Args:
+        Parameters:
             - event: The event containing the chat message.
 
         Returns:
@@ -145,7 +145,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """
         Get feedback and send it through the WebSocket.
 
-        Args:
+        Parameters:
             - agent: The conversation agent for which feedback is requested.
 
         Returns:
