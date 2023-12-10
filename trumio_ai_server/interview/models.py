@@ -40,16 +40,19 @@ class VectorStore:
             ids=[uid]
         )
 
-    def add_to_teams(self, uids: List[str], team_id: Union[str, int]) -> None:
-        col = self.get_collection("students")
+    def add_to_teams(self, uids: List[str], team_id: Union[str, int], project_id: str) -> None:
+        col = self.get_collection("profiles")
 
         embeds = col.get(ids=uids, include=['embeddings'])['embeddings']
 
+        print(embeds)
+
         teams = self.get_collection("teams")
         teams.add(
-            embeddings=np.mean(embeds, axis=0),
-            ids=[str(team_id)]
-        )
+            embeddings=[list(np.mean(embeds, axis=0))],
+            ids=[str(team_id)],
+            metadatas=[{"project_id":project_id}]
+            )
     
 
 

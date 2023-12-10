@@ -72,19 +72,20 @@ def get_codefore_info(request, *args, **kwargs):
     return Response(data=result, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def create_team(request, *args, **kwargs):
 
     sids = request.data['sids']
     team_id = request.data['id']
+    project_id = request.data['proj_id']
 
-    store.add_to_teams(sids, team_id)
+    store.add_to_teams(sids, team_id, project_id)
 
     return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
-def get_preferred_profile(request, *args, **kwargs):
+def get_relevant_profile(request, *args, **kwargs):
     
     pid = kwargs['pid']
 
@@ -93,23 +94,44 @@ def get_preferred_profile(request, *args, **kwargs):
     pr = collection.get(ids=[pid], include=['embeddings'])
 
     preferred_profiles = store.get_collection("profiles").query(query_embeddings=pr['embeddings'][0], n_results=3)
-    print(preferred_profiles)
 
-    return Response(status=status.HTTP_200_OK)
+    data = dict(zip(preferred_profiles['ids'][0], preferred_projects['distances'][0]))
+
+
+    return Response(data=data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
-def get_preferred_projects(request, *args, **kwargs):
+def get_relevant_projects(request, *args, **kwargs):
     
-    sid = request.data['sid']  
+    sid = kwargs['sid']  
     collection = store.get_collection("profiles")
 
     sp = collection.get(ids=[sid], include=['embeddings'])
 
-    preferred_projects = store.get_collection("profiles").query(query_embeddings=sp['embeddings'][0], n_results=3, include=['distances'])
-    print(preferred_projects)
+    preferred_projects = store.get_collection("projects").query(query_embeddings=sp['embeddings'][0], n_results=15, include=['distances'])
+    
+    data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
 
-    return Response(status=status.HTTP_200_OK)
+    return Response(data=data, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def get_relevant_projects_for_team(request, *args, **kwargs):
+    
+    tid = kwargs['tid']  
+    collection = store.get_collection("teams")
+
+    tp = collection.get(ids=[tid], include=['embeddings'])
+
+    print(tp)
+
+    preferred_projects = store.get_collection("projects").query(query_embeddings=tp['embeddings'][0], n_results=15, include=['distances'])
+    
+    data = dict(zip(preferred_projects['ids'][0], preferred_projects['distances'][0]))
+
+    return Response(data=data, status=status.HTTP_200_OK)
 
 
 
@@ -123,10 +145,11 @@ def get_relevant_teams(request, *args, **kwargs):
 
     pr = collection.get(ids=[pid], include=['embeddings'])
 
-    preferred_profiles = store.get_collection("teams").query(query_embeddings=pr['embeddings'][0], n_results=3)
-    print(preferred_profiles)
+    preferred_teams = store.get_collection("teams").query(query_embeddings=pr['embeddings'][0], n_results=15, where={"project_id":pid})
+    
+    data = dict(zip(preferred_teams['ids'][0], preferred_teams['distances'][0]))
 
-    return Response(data=dict({'ids':preferred_profiles['ids']}),status=status.HTTP_200_OK)
+    return Response(data=data,status=status.HTTP_200_OK)
     
 
 
