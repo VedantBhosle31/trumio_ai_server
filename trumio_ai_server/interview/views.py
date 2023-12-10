@@ -155,7 +155,7 @@ def get_relevant_teams(request, *args, **kwargs):
 
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def get_scores(request, *args, **kwargs):
 
     # graphs = dict({
