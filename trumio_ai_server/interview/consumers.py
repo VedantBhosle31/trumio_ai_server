@@ -1,9 +1,12 @@
 import json
 
+import requests
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
+from django.conf import settings
 
-from .customagent import Agent
+from interview.agent.customagent import InterviewAgent
+# from .customagent import Agent
 
 
 
@@ -37,7 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # await self.set_agents()
 
-    async def set_agents(self, topic: str, subtopics: list[str]) -> None:
+    async def set_agents(self, topic: str, subtopics: list[dict], domain: str, user_id: str) -> None:
         """
         Initialize conversation agents for the chat.
 
@@ -48,8 +51,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         Returns:
             None
         """
-        self.inter = Agent(subtopics, topic, role="assistant")
-        self.user = Agent(role="user")
+        self.domain = domain
+        self.user_id = user_id
+        self.subtopics = subtopics
+
+        subtopic_string = f"{subtopics[0]['skill']}"
+
+        for subtopic in subtopics[1:]:
+            subtopic_string+=f", {subtopic['skill']}"
+
+        self.inter = InterviewAgent(topic, subtopic_string)
+        print("initiated")
+        # self.inter = (subtopics, topic, role="assistant")
+        # self.user = Agent(role="user")
         await self.send(text_data=json.dumps({"info":"agent initialized"}))
 
 
@@ -83,24 +97,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if msg_type=="chat":
             message = text_data_json["message"]
-
-
-        # Send message to room group
-        # await self.channel_layer.group_send(
-        #     self.room_group_name, {"type": "chat.message", "message": message}
-        # )
-
-            # await self.send_msg(message)
-
             
 
-            await sync_to_async(self.user.send)(message, self.inter, request_reply=True)
+            # await sync_to_async(self.user.send)(message, self.inter, request_reply=True)
+            reply = await sync_to_async(self.get_reply)(message)
+            # await self.get_feedback()
+            # print("Reply",reply)
 
-            reply = self.user.messages[self.inter][-1]['content']
+            if "TERMINATE" in reply:
+                reply = reply.replace("TERMINATE","")
+                await self.get_feedback()
+                await self.send_msg(reply)
 
-            if len(self.user.messages[self.inter])>10:
-                print("Interview Done")
-                await self.get_feedback(self.inter)
+                return
 
             await self.send_msg(reply)
 
@@ -110,8 +119,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             topic = text_data_json['topic']
             subs = text_data_json['subtopics']
+            domain = text_data_json['domain']
+            user_id = text_data_json['user_id']
 
-            await self.set_agents(topic, subs)
+            await self.set_agents(topic, subs, domain, user_id)
 
 
 
@@ -143,7 +154,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
 
-    async def get_feedback(self, agent: any) -> None:
+    async def get_feedback(self) -> None:
         """
         Get feedback and send it through the WebSocket.
 
@@ -153,11 +164,42 @@ class ChatConsumer(AsyncWebsocketConsumer):
         Returns:
             None
         """
-        feedback = await sync_to_async(self.user.feedback)(agent)
-        await self.send(text_data=json.dumps(json.loads(feedback)))
+        print('before', self.subtopics)
+        feedback = await sync_to_async(self.inter.get_feedback)(self.subtopics)
+        await self.update_score(feedback['expertise'])
+        data = dict()
+        data['summary'] = feedback['summary']
+        data['pros'] = feedback['pros']
+        data['cons'] = feedback['cons']
+        data['communication'] = feedback['communication']
 
+        await self.send(text_data=json.dumps(data))
 
+    
+    def get_reply(self, message):
+        return self.inter(message)
+        
     async def update_score(self, feedback):
 
-        print(feedback)
-        print()
+        ranks = ["Basic", "Proficient", "Advanced", "Expert", "Master"]
+        data = feedback
+
+        for obj in data:
+            obj['expertise'] = 0 if ranks.index(obj['expertise']) < ranks.index('Advanced') else 1
+
+        update_data = dict()
+
+        update_data['nodes'] = data
+        update_data['studentId'] = self.user_id
+        update_data['domain'] = self.domain
+
+        try:
+
+            response = requests.post(f'{settings.RELATIONAL_BACKEND_URL}/user/updateUserDepthBreadth', update_data)
+
+            print(response.json())
+
+        except Exception as e:
+            print(e)
+
+        

@@ -1,418 +1,902 @@
 {
-    "nodes": [
-        {
-            "id": "1",
-            "skill": "Backend Development Foundations"
-        },
-        {
-            "id": "2",
-            "skill": "Version Control – Git"
-        },
-        {
-            "id": "3",
-            "skill": "RESTful APIs"
-        },
-        {
-            "id": "4",
-            "skill": "GraphQL"
-        },
-        {
-            "id": "5",
-            "skill": "WebSockets"
-        },
-        {
-            "id": "6",
-            "skill": "Docker"
-        },
-        {
-            "id": "7",
-            "skill": "Kubernetes"
-        },
-        {
-            "id": "8",
-            "skill": "Linux/Unix Command Line"
-        },
-        {
-            "id": "9",
-            "skill": "Programming Language - Python"
-        },
-        {
-            "id": "10",
-            "skill": "Programming Language - Java"
-        },
-        {
-            "id": "11",
-            "skill": "Programming Language - JavaScript (Node.js)"
-        },
-        {
-            "id": "12",
-            "skill": "Programming Language - Ruby"
-        },
-        {
-            "id": "13",
-            "skill": "Programming Language - PHP"
-        },
-        {
-            "id": "14",
-            "skill": "Programming Language - C#"
-        },
-        {
-            "id": "15",
-            "skill": "Programming Language - Golang"
-        },
-        {
-            "id": "16",
-            "skill": "Database - SQL"
-        },
-        {
-            "id": "17",
-            "skill": "Database - MySQL"
-        },
-        {
-            "id": "18",
-            "skill": "Database - PostgreSQL"
-        },
-        {
-            "id": "19",
-            "skill": "Database - MongoDB"
-        },
-        {
-            "id": "20",
-            "skill": "Database - Redis"
-        },
-        {
-            "id": "21",
-            "skill": "Database - Cassandra"
-        },
-        {
-            "id": "22",
-            "skill": "Database - Firebase"
-        },
-        {
-            "id": "23",
-            "skill": "ORM/ODM Libraries"
-        },
-        {
-            "id": "24",
-            "skill": "Testing - Unit Tests"
-        },
-        {
-            "id": "25",
-            "skill": "Testing - Integration Tests"
-        },
-        {
-            "id": "26",
-            "skill": "Testing - End-to-End Tests"
-        },
-        {
-            "id": "27",
-            "skill": "CI/CD Pipelines"
-        },
-        {
-            "id": "28",
-            "skill": "Authentication - OAuth"
-        },
-        {
-            "id": "29",
-            "skill": "Authentication - JWT"
-        },
-        {
-            "id": "30",
-            "skill": "Authentication - SAML"
-        },
-        {
-            "id": "31",
-            "skill": "Web Framework - Express.js"
-        },
-        {
-            "id": "32",
-            "skill": "Web Framework - Django"
-        },
-        {
-            "id": "33",
-            "skill": "Web Framework - Flask"
-        },
-        {
-            "id": "34",
-            "skill": "Web Framework - Ruby on Rails"
-        },
-        {
-            "id": "35",
-            "skill": "Web Framework - Laravel"
-        },
-        {
-            "id": "36",
-            "skill": "Web Framework - ASP.NET"
-        },
-        {
-            "id": "37",
-            "skill": "Load Balancing"
-        },
-        {
-            "id": "38",
-            "skill": "Reverse Proxy - Nginx"
-        },
-        {
-            "id": "39",
-            "skill": "Reverse Proxy - Apache"
-        },
-        {
-            "id": "40",
-            "skill": "Caching - Varnish"
-        },
-        {
-            "id": "41",
-            "skill": "Caching - Memcached"
-        },
-        {
-            "id": "42",
-            "skill": "Message Brokers - Kafka"
-        },
-        {
-            "id": "43",
-            "skill": "Message Brokers - RabbitMQ"
-        },
-        {
-            "id": "44",
-            "skill": "API Documentation - Swagger/OpenAPI"
-        },
-        {
-            "id": "45",
-            "skill": "Serverless - AWS Lambda"
-        },
-        {
-            "id": "46",
-            "skill": "Serverless - Azure Functions"
-        },
-        {
-            "id": "47",
-            "skill": "Security - OWASP Top 10"
-        },
-        {
-            "id": "48",
-            "skill": "Monitoring - Prometheus"
-        },
-        {
-            "id": "49",
-            "skill": "Monitoring - Grafana"
-        },
-        {
-            "id": "50",
-            "skill": "Logging - ELK Stack"
-        },
-        {
-            "id": "51",
-            "skill": "Infrastructure as Code - Terraform"
-        },
-        {
-            "id": "52",
-            "skill": "Infrastructure as Code - AWS CloudFormation"
-        }
-    ],
-    "edges": [
-        {
-            "source": "1",
-            "target": "2"
-        },
-        {
-            "source": "1",
-            "target": "3"
-        },
-        {
-            "source": "1",
-            "target": "4"
-        },
-        {
-            "source": "1",
-            "target": "5"
-        },
-        {
-            "source": "1",
-            "target": "6"
-        },
-        {
-            "source": "6",
-            "target": "7"
-        },
-        {
-            "source": "1",
-            "target": "8"
-        },
-        {
-            "source": "1",
-            "target": "9"
-        },
-        {
-            "source": "1",
-            "target": "10"
-        },
-        {
-            "source": "1",
-            "target": "11"
-        },
-        {
-            "source": "1",
-            "target": "12"
-        },
-        {
-            "source": "1",
-            "target": "13"
-        },
-        {
-            "source": "1",
-            "target": "14"
-        },
-        {
-            "source": "1",
-            "target": "15"
-        },
-        {
-            "source": "1",
-            "target": "16"
-        },
-        {
-            "source": "16",
-            "target": "17"
-        },
-        {
-            "source": "16",
-            "target": "18"
-        },
-        {
-            "source": "16",
-            "target": "19"
-        },
-        {
-            "source": "16",
-            "target": "20"
-        },
-        {
-            "source": "16",
-            "target": "21"
-        },
-        {
-            "source": "16",
-            "target": "22"
-        },
-        {
-            "source": "16",
-            "target": "23"
-        },
-        {
-            "source": "1",
-            "target": "24"
-        },
-        {
-            "source": "24",
-            "target": "25"
-        },
-        {
-            "source": "25",
-            "target": "26"
-        },
-        {
-            "source": "1",
-            "target": "27"
-        },
-        {
-            "source": "1",
-            "target": "28"
-        },
-        {
-            "source": "28",
-            "target": "29"
-        },
-        {
-            "source": "28",
-            "target": "30"
-        },
-        {
-            "source": "9",
-            "target": "32"
-        },
-        {
-            "source": "9",
-            "target": "33"
-        },
-        {
-            "source": "12",
-            "target": "34"
-        },
-        {
-            "source": "13",
-            "target": "35"
-        },
-        {
-            "source": "14",
-            "target": "36"
-        },
-        {
-            "source": "1",
-            "target": "37"
-        },
-        {
-            "source": "37",
-            "target": "38"
-        },
-        {
-            "source": "37",
-            "target": "39"
-        },
-        {
-            "source": "1",
-            "target": "40"
-        },
-        {
-            "source": "40",
-            "target": "41"
-        },
-        {
-            "source": "1",
-            "target": "42"
-        },
-        {
-            "source": "42",
-            "target": "43"
-        },
-        {
-            "source": "1",
-            "target": "44"
-        },
-        {
-            "source": "1",
-            "target": "45"
-        },
-        {
-            "source": "45",
-            "target": "46"
-        },
-        {
-            "source": "1",
-            "target": "47"
-        },
-        {
-            "source": "1",
-            "target": "48"
-        },
-        {
-            "source": "48",
-            "target": "49"
-        },
-        {
-            "source": "1",
-            "target": "50"
-        },
-        {
-            "source": "1",
-            "target": "51"
-        },
-        {
-            "source": "51",
-            "target": "52"
-        },
-        {
-            "source": "11",
-            "target": "31"
-        }
-    ]
+  "nodes": [
+    {
+      "id": "1",
+      "skill": "Backend Development Foundations",
+      "distance": 0
+    },
+    {
+      "id": "2",
+      "skill": "Programming Languages",
+      "distance": 1
+    },
+    {
+      "id": "3",
+      "skill": "Python",
+      "distance": 2
+    },
+    {
+      "id": "4",
+      "skill": "Java",
+      "distance": 2
+    },
+    {
+      "id": "5",
+      "skill": "C#",
+      "distance": 2
+    },
+    {
+      "id": "6",
+      "skill": "Ruby",
+      "distance": 2
+    },
+    {
+      "id": "7",
+      "skill": "JavaScript",
+      "distance": 2
+    },
+    {
+      "id": "8",
+      "skill": "Database Management",
+      "distance": 1
+    },
+    {
+      "id": "9",
+      "skill": "SQL",
+      "distance": 2
+    },
+    {
+      "id": "10",
+      "skill": "NoSQL",
+      "distance": 2
+    },
+    {
+      "id": "11",
+      "skill": "Web Development Frameworks",
+      "distance": 1
+    },
+    {
+      "id": "12",
+      "skill": "Django",
+      "distance": 2
+    },
+    {
+      "id": "13",
+      "skill": "Ruby on Rails",
+      "distance": 2
+    },
+    {
+      "id": "14",
+      "skill": "Spring",
+      "distance": 2
+    },
+    {
+      "id": "15",
+      "skill": "ASP.NET",
+      "distance": 2
+    },
+    {
+      "id": "16",
+      "skill": "API Development",
+      "distance": 1
+    },
+    {
+      "id": "17",
+      "skill": "RESTful APIs",
+      "distance": 2
+    },
+    {
+      "id": "18",
+      "skill": "GraphQL",
+      "distance": 2
+    },
+    {
+      "id": "19",
+      "skill": "Web Servers",
+      "distance": 1
+    },
+    {
+      "id": "20",
+      "skill": "Apache",
+      "distance": 2
+    },
+    {
+      "id": "21",
+      "skill": "Nginx",
+      "distance": 2
+    },
+    {
+      "id": "22",
+      "skill": "Deployment",
+      "distance": 1
+    },
+    {
+      "id": "23",
+      "skill": "Docker",
+      "distance": 2
+    },
+    {
+      "id": "24",
+      "skill": "Kubernetes",
+      "distance": 2
+    },
+    {
+      "id": "25",
+      "skill": "Continuous Integration/Continuous Deployment (CI/CD)",
+      "distance": 1
+    },
+    {
+      "id": "26",
+      "skill": "Testing",
+      "distance": 1
+    },
+    {
+      "id": "27",
+      "skill": "Unit Testing",
+      "distance": 2
+    },
+    {
+      "id": "28",
+      "skill": "Integration Testing",
+      "distance": 2
+    },
+    {
+      "id": "29",
+      "skill": "Performance Testing",
+      "distance": 2
+    },
+    {
+      "id": "30",
+      "skill": "Security",
+      "distance": 1
+    },
+    {
+      "id": "31",
+      "skill": "Authentication and Authorization",
+      "distance": 2
+    },
+    {
+      "id": "32",
+      "skill": "Encryption",
+      "distance": 2
+    },
+    {
+      "id": "33",
+      "skill": "Logging and Monitoring",
+      "distance": 1
+    },
+    {
+      "id": "34",
+      "skill": "Log Management",
+      "distance": 2
+    },
+    {
+      "id": "35",
+      "skill": "Error Monitoring",
+      "distance": 2
+    },
+    {
+      "id": "36",
+      "skill": "Performance Monitoring",
+      "distance": 2
+    },
+    {
+      "id": "37",
+      "skill": "Scalability and Performance Optimization",
+      "distance": 1
+    },
+    {
+      "id": "38",
+      "skill": "Caching",
+      "distance": 2
+    },
+    {
+      "id": "39",
+      "skill": "Load Balancing",
+      "distance": 2
+    },
+    {
+      "id": "40",
+      "skill": "Code Quality and Code Review",
+      "distance": 1
+    },
+    {
+      "id": "41",
+      "skill": "Code Review",
+      "distance": 2
+    },
+    {
+      "id": "42",
+      "skill": "Code Analysis",
+      "distance": 2
+    },
+    {
+      "id": "43",
+      "skill": "Code Formatting",
+      "distance": 2
+    },
+    {
+      "id": "44",
+      "skill": "Code Documentation",
+      "distance": 2
+    },
+    {
+      "id": "45",
+      "skill": "Error Handling and Debugging",
+      "distance": 1
+    },
+    {
+      "id": "46",
+      "skill": "Version Control",
+      "distance": 1
+    },
+    {
+      "id": "47",
+      "skill": "Git",
+      "distance": 2
+    },
+    {
+      "id": "48",
+      "skill": "Mercurial",
+      "distance": 2
+    },
+    {
+      "id": "49",
+      "skill": "Continuous Integration/Continuous Deployment (CI/CD) Tools",
+      "distance": 1
+    },
+    {
+      "id": "50",
+      "skill": "Jenkins",
+      "distance": 2
+    },
+    {
+      "id": "51",
+      "skill": "Travis CI",
+      "distance": 2
+    },
+    {
+      "id": "52",
+      "skill": "CircleCI",
+      "distance": 2
+    },
+    {
+      "id": "53",
+      "skill": "Build Tools",
+      "distance": 1
+    },
+    {
+      "id": "54",
+      "skill": "Maven",
+      "distance": 2
+    },
+    {
+      "id": "55",
+      "skill": "Gradle",
+      "distance": 2
+    },
+    {
+      "id": "56",
+      "skill": "Package Managers",
+      "distance": 1
+    },
+    {
+      "id": "57",
+      "skill": "npm",
+      "distance": 2
+    },
+    {
+      "id": "58",
+      "skill": "pip",
+      "distance": 2
+    },
+    {
+      "id": "59",
+      "skill": "Dependency Management",
+      "distance": 1
+    },
+    {
+      "id": "60",
+      "skill": "Virtualization",
+      "distance": 1
+    },
+    {
+      "id": "61",
+      "skill": "Virtual Machines",
+      "distance": 2
+    },
+    {
+      "id": "62",
+      "skill": "Containers",
+      "distance": 2
+    },
+    {
+      "id": "63",
+      "skill": "Infrastructure as Code (IaC)",
+      "distance": 1
+    },
+    {
+      "id": "64",
+      "skill": "Configuration Management",
+      "distance": 1
+    },
+    {
+      "id": "65",
+      "skill": "Ansible",
+      "distance": 2
+    },
+    {
+      "id": "66",
+      "skill": "Puppet",
+      "distance": 2
+    },
+    {
+      "id": "67",
+      "skill": "Chef",
+      "distance": 2
+    },
+    {
+      "id": "68",
+      "skill": "Monitoring Tools",
+      "distance": 1
+    },
+    {
+      "id": "69",
+      "skill": "Prometheus",
+      "distance": 2
+    },
+    {
+      "id": "70",
+      "skill": "Grafana",
+      "distance": 2
+    },
+    {
+      "id": "71",
+      "skill": "Logging Tools",
+      "distance": 1
+    },
+    {
+      "id": "72",
+      "skill": "ELK Stack",
+      "distance": 2
+    },
+    {
+      "id": "73",
+      "skill": "Splunk",
+      "distance": 2
+    },
+    {
+      "id": "74",
+      "skill": "Security Tools",
+      "distance": 1
+    },
+    {
+      "id": "75",
+      "skill": "OWASP",
+      "distance": 2
+    },
+    {
+      "id": "76",
+      "skill": "Burp Suite",
+      "distance": 2
+    },
+    {
+      "id": "77",
+      "skill": "Network Protocols",
+      "distance": 1
+    },
+    {
+      "id": "78",
+      "skill": "TCP/IP",
+      "distance": 2
+    },
+    {
+      "id": "79",
+      "skill": "HTTP/HTTPS",
+      "distance": 2
+    },
+    {
+      "id": "80",
+      "skill": "DNS",
+      "distance": 2
+    },
+    {
+      "id": "81",
+      "skill": "Load Balancers",
+      "distance": 1
+    },
+    {
+      "id": "82",
+      "skill": "NGINX",
+      "distance": 2
+    },
+    {
+      "id": "83",
+      "skill": "HAProxy",
+      "distance": 2
+    },
+    {
+      "id": "84",
+      "skill": "Web Application Firewalls (WAF)",
+      "distance": 1
+    },
+    {
+      "id": "85",
+      "skill": "ModSecurity",
+      "distance": 2
+    },
+    {
+      "id": "86",
+      "skill": "Incident Response",
+      "distance": 1
+    },
+    {
+      "id": "87",
+      "skill": "Forensics",
+      "distance": 2
+    },
+    {
+      "id": "88",
+      "skill": "Backup and Recovery",
+      "distance": 1
+    },
+    {
+      "id": "89",
+      "skill": "Disaster Recovery",
+      "distance": 2
+    },
+    {
+      "id": "90",
+      "skill": "High Availability",
+      "distance": 1
+    },
+    {
+      "id": "91",
+      "skill": "Fault Tolerance",
+      "distance": 1
+    },
+    {
+      "id": "92",
+      "skill": "Performance Optimization",
+      "distance": 1
+    },
+    {
+      "id": "93",
+      "skill": "Database Optimization",
+      "distance": 2
+    },
+    {
+      "id": "94",
+      "skill": "Caching Strategies",
+      "distance": 1
+    },
+    {
+      "id": "95",
+      "skill": "Content Delivery Networks (CDN)",
+      "distance": 1
+    },
+    {
+      "id": "96",
+      "skill": "Serverless Architecture",
+      "distance": 1
+    },
+    {
+      "id": "97",
+      "skill": "AWS Lambda",
+      "distance": 2
+    },
+    {
+      "id": "98",
+      "skill": "Google Cloud Functions",
+      "distance": 2
+    },
+    {
+      "id": "99",
+      "skill": "Azure Functions",
+      "distance": 2
+    },
+    {
+      "id": "100",
+      "skill": "Microservices",
+      "distance": 1
+    }
+  ],
+  "edges": [
+    {
+      "source": "1",
+      "target": "2"
+    },
+    {
+      "source": "2",
+      "target": "3"
+    },
+    {
+      "source": "2",
+      "target": "4"
+    },
+    {
+      "source": "2",
+      "target": "5"
+    },
+    {
+      "source": "2",
+      "target": "6"
+    },
+    {
+      "source": "2",
+      "target": "7"
+    },
+    {
+      "source": "1",
+      "target": "8"
+    },
+    {
+      "source": "8",
+      "target": "9"
+    },
+    {
+      "source": "8",
+      "target": "10"
+    },
+    {
+      "source": "1",
+      "target": "11"
+    },
+    {
+      "source": "11",
+      "target": "12"
+    },
+    {
+      "source": "11",
+      "target": "13"
+    },
+    {
+      "source": "11",
+      "target": "14"
+    },
+    {
+      "source": "11",
+      "target": "15"
+    },
+    {
+      "source": "1",
+      "target": "16"
+    },
+    {
+      "source": "16",
+      "target": "17"
+    },
+    {
+      "source": "16",
+      "target": "18"
+    },
+    {
+      "source": "1",
+      "target": "19"
+    },
+    {
+      "source": "19",
+      "target": "20"
+    },
+    {
+      "source": "19",
+      "target": "21"
+    },
+    {
+      "source": "1",
+      "target": "22"
+    },
+    {
+      "source": "22",
+      "target": "23"
+    },
+    {
+      "source": "22",
+      "target": "24"
+    },
+    {
+      "source": "1",
+      "target": "25"
+    },
+    {
+      "source": "1",
+      "target": "26"
+    },
+    {
+      "source": "26",
+      "target": "27"
+    },
+    {
+      "source": "26",
+      "target": "28"
+    },
+    {
+      "source": "26",
+      "target": "29"
+    },
+    {
+      "source": "1",
+      "target": "30"
+    },
+    {
+      "source": "30",
+      "target": "31"
+    },
+    {
+      "source": "30",
+      "target": "32"
+    },
+    {
+      "source": "1",
+      "target": "33"
+    },
+    {
+      "source": "33",
+      "target": "34"
+    },
+    {
+      "source": "33",
+      "target": "35"
+    },
+    {
+      "source": "33",
+      "target": "36"
+    },
+    {
+      "source": "1",
+      "target": "37"
+    },
+    {
+      "source": "37",
+      "target": "38"
+    },
+    {
+      "source": "37",
+      "target": "39"
+    },
+    {
+      "source": "1",
+      "target": "40"
+    },
+    {
+      "source": "40",
+      "target": "41"
+    },
+    {
+      "source": "40",
+      "target": "42"
+    },
+    {
+      "source": "40",
+      "target": "43"
+    },
+    {
+      "source": "40",
+      "target": "44"
+    },
+    {
+      "source": "1",
+      "target": "45"
+    },
+    {
+      "source": "1",
+      "target": "46"
+    },
+    {
+      "source": "46",
+      "target": "47"
+    },
+    {
+      "source": "46",
+      "target": "48"
+    },
+    {
+      "source": "1",
+      "target": "49"
+    },
+    {
+      "source": "49",
+      "target": "50"
+    },
+    {
+      "source": "49",
+      "target": "51"
+    },
+    {
+      "source": "49",
+      "target": "52"
+    },
+    {
+      "source": "1",
+      "target": "53"
+    },
+    {
+      "source": "53",
+      "target": "54"
+    },
+    {
+      "source": "53",
+      "target": "55"
+    },
+    {
+      "source": "1",
+      "target": "56"
+    },
+    {
+      "source": "56",
+      "target": "57"
+    },
+    {
+      "source": "56",
+      "target": "58"
+    },
+    {
+      "source": "1",
+      "target": "59"
+    },
+    {
+      "source": "1",
+      "target": "60"
+    },
+    {
+      "source": "60",
+      "target": "61"
+    },
+    {
+      "source": "60",
+      "target": "62"
+    },
+    {
+      "source": "1",
+      "target": "63"
+    },
+    {
+      "source": "1",
+      "target": "64"
+    },
+    {
+      "source": "64",
+      "target": "65"
+    },
+    {
+      "source": "64",
+      "target": "66"
+    },
+    {
+      "source": "64",
+      "target": "67"
+    },
+    {
+      "source": "1",
+      "target": "68"
+    },
+    {
+      "source": "68",
+      "target": "69"
+    },
+    {
+      "source": "68",
+      "target": "70"
+    },
+    {
+      "source": "1",
+      "target": "71"
+    },
+    {
+      "source": "71",
+      "target": "72"
+    },
+    {
+      "source": "71",
+      "target": "73"
+    },
+    {
+      "source": "1",
+      "target": "74"
+    },
+    {
+      "source": "74",
+      "target": "75"
+    },
+    {
+      "source": "74",
+      "target": "76"
+    },
+    {
+      "source": "1",
+      "target": "77"
+    },
+    {
+      "source": "77",
+      "target": "78"
+    },
+    {
+      "source": "77",
+      "target": "79"
+    },
+    {
+      "source": "77",
+      "target": "80"
+    },
+    {
+      "source": "1",
+      "target": "81"
+    },
+    {
+      "source": "81",
+      "target": "82"
+    },
+    {
+      "source": "81",
+      "target": "83"
+    },
+    {
+      "source": "1",
+      "target": "84"
+    },
+    {
+      "source": "84",
+      "target": "85"
+    },
+    {
+      "source": "1",
+      "target": "86"
+    },
+    {
+      "source": "86",
+      "target": "87"
+    },
+    {
+      "source": "1",
+      "target": "88"
+    },
+    {
+      "source": "88",
+      "target": "89"
+    },
+    {
+      "source": "1",
+      "target": "90"
+    },
+    {
+      "source": "1",
+      "target": "91"
+    },
+    {
+      "source": "1",
+      "target": "92"
+    },
+    {
+      "source": "92",
+      "target": "93"
+    },
+    {
+      "source": "1",
+      "target": "94"
+    },
+    {
+      "source": "1",
+      "target": "95"
+    },
+    {
+      "source": "1",
+      "target": "96"
+    },
+    {
+      "source": "96",
+      "target": "97"
+    },
+    {
+      "source": "96",
+      "target": "98"
+    },
+    {
+      "source": "96",
+      "target": "99"
+    },
+    {
+      "source": "1",
+      "target": "100"
+    }
+  ]
 }

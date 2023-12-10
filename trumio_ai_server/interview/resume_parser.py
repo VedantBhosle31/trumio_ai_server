@@ -59,12 +59,9 @@ class ResumeParser:
 
     The categories are
 
-    1. Frontend Development
-    2. Backend Development
-    3. Machine learning
-    4. Computer Vision
-    5. Natural Language Processing
-    6. Reinforcement Learning
+    1. ai
+    2. frontend
+    3. backend
     """
 
 

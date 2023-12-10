@@ -56,8 +56,24 @@
         document.querySelector('#topic-submit').onclick = function(e) {
             chatSocket.send(JSON.stringify({
                 'type':'topic',
-                'topic': "backend",
-                'subtopics': ["python","flask"]
+                'topic': "frontend",
+                'domain':'ai',
+                'user_id':'sdfsd',
+                'subtopics': [{
+                    "id": "19",
+                    "skill": "React",
+                    "distance": 2
+                },
+                {
+                    "id": "20",
+                    "skill": "Angular",
+                    "distance": 2
+                },
+                {
+                    "id": "21",
+                    "skill": "Vue.js",
+                    "distance": 2
+                }]
             }));
         };
     </script>
